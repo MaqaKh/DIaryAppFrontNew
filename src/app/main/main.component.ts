@@ -17,7 +17,8 @@ export class MainComponent implements OnInit {
   currentNote:Note;
 
   constructor(
-    private route: ActivatedRoute, private router: Router, 
+    private route: ActivatedRoute, 
+    private router: Router, 
     private service: ServiceService
     ) { 
     this.service.getNotes().subscribe(
@@ -86,7 +87,16 @@ export class MainComponent implements OnInit {
       this.currentDescription=null
     }
     
-    location.reload()
+    setTimeout(function(){
+      location.reload()
+    },100);
+
+    
+  }
+
+  logout(){
+    localStorage.clear()
+    this.router.navigate(['login'])
   }
 
   ngOnInit(): void {
