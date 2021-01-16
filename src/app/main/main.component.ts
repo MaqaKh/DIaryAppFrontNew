@@ -10,91 +10,93 @@ import { User } from '../shared/user';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-  notes:Note[]=[]
-  users:User[]=[]
+  notes: Note[] = []
+  users: User[] = []
   currentDescription;
   currentUser;
-  currentNote:Note;
+  currentNote: Note;
 
   constructor(
-    private route: ActivatedRoute, 
-    private router: Router, 
+    private route: ActivatedRoute,
+    private router: Router,
     private service: ServiceService
-    ) { 
+  ) {
     this.service.getNotes().subscribe(
-      (data)=>{this.notes=data},
-      (err)=>{console.log(err)}
+      (data) => { this.notes = data },
+      (err) => { console.log(err) }
     )
 
     this.service.getUser().subscribe(
-      (data)=>{this.users=data},
-      (err)=>{console.log(err)}
+      (data) => { this.users = data },
+      (err) => { console.log(err) }
     )
 
     this.service.getUserById(localStorage.getItem("id")).subscribe(
-      (data)=>{this.currentUser=data},
-      (err)=>{console.log(err)}
+      (data) => { this.currentUser = data },
+      (err) => { console.log(err) }
     )
   }
 
-  deleteNote(note:Note){
+  deleteNote(note: Note) {
     console.log(note)
     console.log("delete")
-      this.service.removeNote(note.id).subscribe(
-        (data)=>{console.log(data)},
-        (err)=>{console.log(err)}
-      )
-      location.reload();
+    this.service.removeNote(note.id).subscribe(
+      (data) => { console.log(data) },
+      (err) => { console.log(err) }
+    )
+    setTimeout(function () {
+      location.reload()
+    }, 100);
   }
 
-  editNote(note: Note){
-    this.currentDescription=note.description;
-    this.currentNote=note;
+  editNote(note: Note) {
+    this.currentDescription = note.description;
+    this.currentNote = note;
     console.log(note)
   }
 
-  save(){
-    if(this.currentDescription && this.currentUser){
+  save() {
+    if (this.currentDescription && this.currentUser) {
       console.log("main")
       console.log(this.currentDescription)
-      let desc= this.currentDescription
+      let desc = this.currentDescription
 
       this.service.getUserById(localStorage.getItem("id")).subscribe(
-        (data)=>{
-          if(data){
-            if(this.currentNote){
-              this.currentNote.description=desc
+        (data) => {
+          if (data) {
+            if (this.currentNote) {
+              this.currentNote.description = desc
               console.log(this.currentNote)
               this.service.updateNote(this.currentNote).subscribe(
-                (data)=>{console.log(data);console.log("note updated")},
-                (err)=>{console.log(err)}
+                (data) => { console.log(data); console.log("note updated") },
+                (err) => { console.log(err) }
               )
-              this.currentNote=null;
-            }else{
+              this.currentNote = null;
+            } else {
               console.log("else")
-              let note=new Note(null,desc,null,null,data)
+              let note = new Note(null, desc, null, null, data)
               this.service.saveNote(note).subscribe(
-                (data)=>{console.log(data);console.log()},
-                (err)=>{console.log(err)}
+                (data) => { console.log(data); console.log() },
+                (err) => { console.log(err) }
               )
             }
-            
+
           }
         },
-        (err) => {console.log(err)}
+        (err) => { console.log(err) }
       )
 
-      this.currentDescription=null
+      this.currentDescription = null
     }
-    
-    setTimeout(function(){
-      location.reload()
-    },100);
 
-    
+    setTimeout(function () {
+      location.reload()
+    }, 100);
+
+
   }
 
-  logout(){
+  logout() {
     localStorage.clear()
     this.router.navigate(['login'])
   }

@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthGuard } from './shared/auth.guard';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -25,18 +26,22 @@ import { AuthGuard } from './shared/auth.guard';
     FormsModule,
     RouterModule.forRoot([
       {
+        path: "",
+        component: LoginComponent
+      },
+      {
+        path: "register",
+        component: RegisterComponent
+      },
+      {
         path: "main",
         component: MainComponent,
         canActivate: [AuthGuard]
       },
-      {
-        path: "",
-        component: LoginComponent
-      },
       { path: '**', redirectTo: '' }
     ])
   ],
-  
+
   providers: [HttpClientModule, HttpClient],
   bootstrap: [AppComponent]
 })

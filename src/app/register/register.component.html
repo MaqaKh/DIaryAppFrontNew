@@ -1,0 +1,16 @@
+<h1>My Personal Diary</h1>
+<div class="login-page">
+    <div class="form">
+        <div [innerHTML]="msg" style="color:red"></div>
+        <form>
+            <input type="text" placeholder="username" name="username" />
+            <input type="password" placeholder="password" ngModel name="password" />
+            <input type="text" placeholder="firstname" ngModel name="firstname" />
+            <input type="lastname" placeholder="lastname" ngModel name="lastname" />
+
+
+            <a id="link-back" href="">Already have account? login</a>
+        </form>
+        <button (click)="register()">register</button>
+    </div>
+</div>
